@@ -1,0 +1,16 @@
+#TODO change when on 1.21
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "tlsmonitor.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ .Release.Name }}
+spec:
+  maxUnavailable: {{ .Values.pdb }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app: {{ .Release.Name }}

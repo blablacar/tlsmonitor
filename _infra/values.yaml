@@ -1,0 +1,58 @@
+---
+# TLSmonitor helm chart
+
+image:
+  repository: geckosplinter/tlsmonitor
+  tag: 1.2.0
+  pullPolicy: IfNotPresent
+
+# List of endpoints to checks
+hosts: []
+# - port: 443
+#   target:
+#   - www.google.fr
+# - port: 8443
+#   target:
+#   - www.google.com
+
+# File certificates to check (must be secrets in the same NS)
+certficateSecrets: []
+# - secretName
+
+# Frequency is hours express as int
+checksFrequency: 24
+
+# Prometheus metrics
+metrics:
+  enabled: true
+  prometheusOperator: true
+  prometheusAnnotations: false
+  port: 9090
+  path: /metrics
+
+istio:
+  enabled: false
+  sidecar: false
+  serviceEntry: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+replicas: 1
+pdb: 1
+
+nodeAffinity.key: {}
+
+globalLabels: {}
+
+deployment:
+  labels: {}
+
+pod:
+  labels: {}
+  annotations: {}

@@ -1,0 +1,24 @@
+{{- if .Values.istio.enabled }}
+{{ $super := . }}
+{{- range .Values.hosts }}
+{{- range .target }}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: "{{ $super.Release.Name }}-{{ . | replace "." "-" }}"
+  labels:
+    app.kubernetes.io/name: {{ include "tlsmonitor.name" $super }}
+    helm.sh/chart: {{ include "tlsmonitor.chart" $super }}
+    app.kubernetes.io/instance: {{ $super.Release.Name }}
+    app.kubernetes.io/managed-by: {{$super.Release.Service }}
+    app: {{ $super.Release.Name }}
+spec:
+  host: {{ . }}
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        connectTimeout: {{ default "2s" $super.Values.istio.connectTimeout }}
+{{- end}}
+{{- end }}
+{{- end }}

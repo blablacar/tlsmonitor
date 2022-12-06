@@ -1,0 +1,32 @@
+{{- if and .Values.istio.enabled .Values.istio.sidecar .Values.hosts }}
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: {{ include "tlsmonitor.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
+    helm.sh/chart: {{ include "tlsmonitor.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{ .Release.Name }}
+spec:
+  egress:
+  - hosts:
+    - istio-system/istiod.istio-system.svc.cluster.local
+{{- range .Values.hosts }}
+{{- range .target }}
+    - './{{ . }}'
+{{- end }}
+{{- end }}
+{{- if .Values.metrics.enabled }}
+  ingress:
+  - defaultEndpoint: '127.0.0.1:{{ .Values.metrics.port }}'
+    port:
+      name: http-prom
+      number: {{ .Values.metrics.port }}
+      protocol: HTTP
+{{- end }}
+  workloadSelector:
+    labels:
+      app: {{ .Release.Name }}
+{{- end }}
