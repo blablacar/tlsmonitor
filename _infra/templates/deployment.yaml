@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tlsmonitor.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
+    helm.sh/chart: {{ include "tlsmonitor.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{ .Release.Name }}
+{{- with .Values.labels }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.deployment.labels }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  revisionHistoryLimit: 3
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app: {{ .Release.Name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{ .Release.Name }}
+{{- with .Values.labels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.pod.labels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+      annotations:
+        json_logs: "true"
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+{{- if and .Values.metrics.enabled .Values.metrics.prometheusAnnotations }}
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '{{ .Values.metrics.path }}'
+        prometheus.io/port: '{{ .Values.metrics.port }}'
+{{- end }}
+{{- with .Values.pod.annotations }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+    spec:
+      affinity:
+{{- if .Values.nodeAffinity }}
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: {{ .Values.nodeAffinity.key }}
+                operator: Exists
+            weight: 100
+{{- end }}
+      containers:
+      - name: tlsmonitor
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - name: http-prom
+            containerPort: {{ .Values.metrics.port }}
+            protocol: TCP
+        command: ['/tlsmonitor']
+        args:
+        - 'server'
+        - '-c'
+        - '/config.yaml'
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        env:
+          {{- toYaml .Values.env | nindent 10 }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+        volumeMounts:
+        - name: config
+          mountPath: /config.yaml
+          subPath: config.yaml
+{{- range .Values.certificateSecrets }}
+        - name: {{ . }}
+          mountPath: "/certs/{{ . }}/"
+          readOnly: true
+{{- end }}
+{{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+{{- end }}
+      securityContext:
+        fsGroup: 17918
+        runAsUser: 17918
+      serviceAccountName: {{ .Release.Name }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Release.Name }}
+{{- range .Values.certificateSecrets }}
+      - name: {{.}}
+        secret:
+          secretName: {{.}}
+{{- end }}

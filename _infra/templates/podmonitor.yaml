@@ -1,0 +1,23 @@
+{{- if and .Values.metrics.enabled .Values.metrics.prometheusOperator }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ include "tlsmonitor.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
+    helm.sh/chart: {{ include "tlsmonitor.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: {{ .Release.Name }}
+{{- with .Values.deployment.labels }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app: {{ .Release.Name }}
+  podMetricsEndpoints:
+  - port: http-prom
+{{- end }}
