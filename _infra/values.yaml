@@ -3,7 +3,7 @@
 
 image:
   repository: geckosplinter/tlsmonitor
-  tag: 1.2.0
+  tag: 1.3.0
   pullPolicy: IfNotPresent
 
 # List of endpoints to checks
