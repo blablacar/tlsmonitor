@@ -1,0 +1,11 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  // @see https://docs.renovatebot.com
+  // @see https://renovate.tools-1.blbl.cr/
+
+  extends: [
+    "blablacar/renovate-config//ep/presets/automerge-branches.json5",
+    "blablacar/renovate-config//ep/go.json5",
+  ],
+}
