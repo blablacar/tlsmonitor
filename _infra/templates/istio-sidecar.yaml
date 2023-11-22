@@ -26,6 +26,8 @@ spec:
       number: {{ .Values.metrics.port }}
       protocol: HTTP
 {{- end }}
+  outboundTrafficPolicy:
+    mode: {{ .Values.istio.outboundTrafficPolicy }}
   workloadSelector:
     labels:
       app: {{ .Release.Name }}
