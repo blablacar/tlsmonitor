@@ -34,6 +34,7 @@ istio:
   enabled: false
   sidecar: false
   serviceEntry: false
+  outboundTrafficPolicy: ALLOW_ANY
 
 resources:
   requests:
