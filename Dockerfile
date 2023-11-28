@@ -7,7 +7,7 @@ RUN go mod download && go mod verify
 
 COPY . .
 
-RUN go build -v -o ./tlsmonitor
+RUN CGO_ENABLED=0 go build -v -o ./tlsmonitor
 
 FROM gcr.io/distroless/base
 
