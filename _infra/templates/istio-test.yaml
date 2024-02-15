@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Sidecar
 metadata:
-  label:
+  labels:
     istio.io/rev: v120
   name: sidecar-test
   namespace: infra

@@ -1,0 +1,49 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: pro-partner
+  namespace: pro
+  labels:
+    istio.io/rev: v120
+spec:
+  hosts:
+    - pro-partner.pro.svc.cluster.local
+  http:
+    - name: "pro-partner-bookings-data-v2"
+      match:
+        - method:
+            exact: 'GET'
+          uri:
+            regex: '^\/api\/bookings\/v2\/[a-zA-Z0-9-]+$'
+      route:
+        - destination:
+            host: pro-partner.pro.svc.cluster.local
+    - name: "pro-partner-bookings-data-v3"
+      match:
+        - method:
+            exact: 'GET'
+          uri:
+            regex: '^\/api\/bookings\/v3\/[a-zA-Z0-9-]+$'
+    - name: "pro-partner-bookings-and-tripoffers-legacy"
+      match:
+        - method:
+            exact: 'GET'
+          uri:
+            regex: '^\/bookings-and-tripoffers$'
+      route:
+        - destination:
+            host: pro-partner.pro.svc.cluster.local
+    - name: "pro-partner-bookings-and-tripoffers-v4"
+      match:
+        - method:
+            exact: 'GET'
+          uri:
+            regex: '^\/bookings-and-tripoffers\/v4$'
+      route:
+        - destination:
+            host: pro-partner.pro.svc.cluster.local
+    - name: "pro-partner-catch-all"
+      route:
+        - destination:
+            host: "pro-partner.pro.svc.cluster.local"
