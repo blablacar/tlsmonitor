@@ -2,8 +2,8 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: pro-partner
-  namespace: pro
+  name: istio-broken
+  namespace: infra
   labels:
     istio.io/rev: v120
 spec:
