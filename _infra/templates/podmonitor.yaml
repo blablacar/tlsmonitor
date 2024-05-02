@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app: {{ .Release.Name }}
+{{- include "datadog.labels" . | nindent 4 }}
 {{- with .Values.deployment.labels }}
 {{ toYaml . | indent 4 }}
 {{- end }}

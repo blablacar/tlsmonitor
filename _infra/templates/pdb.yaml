@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: {{ include "tlsmonitor.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app: {{ .Release.Name }}
+    {{- include "datadog.labels" . | nindent 4 }}
 spec:
   maxUnavailable: {{ .Values.pdb }}
   selector:

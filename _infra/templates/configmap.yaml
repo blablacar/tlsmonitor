@@ -2,6 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "tlsmonitor.fullname" . }}
+  labels:
+    app: {{ .Release.Name }}
+    {{- include "datadog.labels" . | nindent 4 }}
 data:
   config.yaml: |
     {{- tpl (.Files.Get "files/config.yaml") . | nindent 4 }}

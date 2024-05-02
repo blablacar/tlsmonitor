@@ -49,7 +49,7 @@ pdb: 1
 
 nodeAffinity.key: {}
 
-globalLabels: {}
+labels: {}
 
 deployment:
   labels: {}
@@ -57,3 +57,8 @@ deployment:
 pod:
   labels: {}
   annotations: {}
+
+datadog:
+  enabled: false
+  openMetricsCheckEnabled: true
+  team: team_core_infrastructure
