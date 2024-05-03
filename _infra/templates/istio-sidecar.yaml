@@ -1,4 +1,4 @@
-{{- if and .Values.istio.enabled .Values.istio.sidecar .Values.hosts }}
+{{- if and .Values.istio.enabled .Values.istio.sidecar }}
 apiVersion: networking.istio.io/v1beta1
 kind: Sidecar
 metadata:

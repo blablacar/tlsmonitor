@@ -1,4 +1,4 @@
-{{- if and .Values.istio.serviceEntry .Values.hosts -}}
+{{- if and .Values.istio.enabled .Values.istio.serviceEntry -}}
 {{ $super := . }}
 {{- range .Values.hosts }}
 ---
