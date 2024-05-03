@@ -25,16 +25,16 @@ checksFrequency: 24
 # Prometheus metrics
 metrics:
   enabled: true
-  prometheusOperator: true
+  prometheusOperator: false
   prometheusAnnotations: false
   port: 9090
   path: /metrics
 
 istio:
   enabled: false
-  sidecar: false
-  serviceEntry: false
-  outboundTrafficPolicy: ALLOW_ANY
+  sidecar: true
+  serviceEntry: true
+  outboundTrafficPolicy: REGISTRY_ONLY
 
 resources:
   requests:
