@@ -90,7 +90,7 @@ spec:
 {{- end }}
       containers:
       - name: tlsmonitor
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.Version  }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
           - name: http-prom
