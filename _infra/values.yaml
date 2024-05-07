@@ -5,7 +5,7 @@ image:
   repository: ghcr.io/blablacar/tlsmonitor
   pullPolicy: IfNotPresent
 # Tag default to chart version
-# tag:
+#  tag:
 
 
 # List of endpoints to checks
