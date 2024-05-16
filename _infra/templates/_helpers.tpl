@@ -33,7 +33,7 @@ Create chart name and version as used by the chart label.
 
 {{- define "datadog.labels" -}}
 {{- if .Values.datadog.enabled -}}
-tags.datadoghq.com/service: "tlsmonitor"
+tags.datadoghq.com/service: {{ include "tlsmonitor.fullname" . }}
 tags.datadoghq.com/version: {{ .Values.image.tag | quote }}
 team: {{ .Values.datadog.team }}
 {{- end }}
