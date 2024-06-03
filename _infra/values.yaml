@@ -2,9 +2,11 @@
 # TLSmonitor helm chart
 
 image:
-  repository: geckosplinter/tlsmonitor
-  tag: 1.3.0
+  repository: ghcr.io/blablacar/tlsmonitor
   pullPolicy: IfNotPresent
+# Tag default to chart version
+#  tag:
+
 
 # List of endpoints to checks
 hosts: []
@@ -49,7 +51,7 @@ pdb: 1
 
 nodeAffinity.key: {}
 
-globalLabels: {}
+labels: {}
 
 deployment:
   labels: {}
@@ -57,3 +59,8 @@ deployment:
 pod:
   labels: {}
   annotations: {}
+
+datadog:
+  enabled: false
+  openMetricsCheckEnabled: true
+  team: infra

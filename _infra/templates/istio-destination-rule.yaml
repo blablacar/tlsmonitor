@@ -13,6 +13,7 @@ metadata:
     app.kubernetes.io/instance: {{ $super.Release.Name }}
     app.kubernetes.io/managed-by: {{$super.Release.Service }}
     app: {{ $super.Release.Name }}
+    {{- include "datadog.labels" $super | nindent 4 }}
 spec:
   host: {{ . }}
   trafficPolicy:

@@ -30,3 +30,11 @@ Create chart name and version as used by the chart label.
 {{- define "tlsmonitor.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "datadog.labels" -}}
+{{- if .Values.datadog.enabled -}}
+tags.datadoghq.com/service: {{ include "tlsmonitor.fullname" . }}
+tags.datadoghq.com/version: {{ .Values.image.tag | quote }}
+team: {{ .Values.datadog.team }}
+{{- end }}
+{{- end }}
