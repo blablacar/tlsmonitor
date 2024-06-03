@@ -64,7 +64,7 @@ spec:
         ad.datadoghq.com/tlsmonitor.instances: |
           [
             {
-              "openmetrics_endpoint": "<http://%%host%%:%%port%%/metrics>",
+              "openmetrics_endpoint": "http://%%host%%:%%port%%/metrics",
               "namespace": "tlsmonitor",
               "metrics": [
                 {"host_cert_expiration_seconds":"host_cert_expiration_seconds"},
