@@ -9,11 +9,11 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app: {{ .Release.Name }}
+    istio.io/rev: stable
     {{- include "datadog.labels" . | nindent 4 }}
 spec:
   egress:
   - hosts:
-    - istio-system/istiod.istio-system.svc.cluster.local
 {{- range .Values.hosts }}
 {{- range .target }}
     - './{{ . }}'

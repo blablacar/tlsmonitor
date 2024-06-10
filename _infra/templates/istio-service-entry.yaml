@@ -12,6 +12,7 @@ metadata:
     app.kubernetes.io/instance: {{ $super.Release.Name }}
     app.kubernetes.io/managed-by: {{$super.Release.Service }}
     app: {{ $super.Release.Name }}
+    istio.io/rev: stable
     {{- include "datadog.labels" $super | nindent 4 }}
 spec:
   hosts:
