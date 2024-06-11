@@ -10,13 +10,15 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app: {{ .Release.Name }}
     {{- include "datadog.labels" . | nindent 4 }}
+    {{- include "istio.labels" . | nindent 4 }}
 spec:
+{{- if .Values.hosts }}
   egress:
   - hosts:
-    - istio-system/istiod.istio-system.svc.cluster.local
 {{- range .Values.hosts }}
 {{- range .target }}
     - './{{ . }}'
+{{- end }}
 {{- end }}
 {{- end }}
 {{- if .Values.metrics.enabled }}

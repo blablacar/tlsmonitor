@@ -38,3 +38,9 @@ tags.datadoghq.com/version: {{ .Values.image.tag | quote }}
 team: {{ .Values.datadog.team }}
 {{- end }}
 {{- end }}
+
+{{- define "istio.labels" -}}
+{{- if .Values.istio.enabled -}}
+istio.io/rev: {{ .Values.istio.tag }}
+{{- end }}
+{{- end }}

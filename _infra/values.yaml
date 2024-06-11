@@ -36,6 +36,7 @@ istio:
   enabled: false
   sidecar: true
   serviceEntry: true
+  tag: stable
   outboundTrafficPolicy: REGISTRY_ONLY
 
 resources:
