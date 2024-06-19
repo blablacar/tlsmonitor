@@ -41,6 +41,6 @@ team: {{ .Values.datadog.team }}
 
 {{- define "istio.labels" -}}
 {{- if .Values.istio.enabled -}}
-istio.io/rev: {{ .Values.istio.tag }}
+istio.io/tag: {{ .Values.istio.tag }}
 {{- end }}
 {{- end }}
