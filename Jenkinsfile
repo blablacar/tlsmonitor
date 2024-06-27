@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-env.GIT_DEFAULT_BRANCH = 'ng/tlsmonitor-chart-auto-release'
+env.GIT_DEFAULT_BRANCH = 'master'
 final Boolean isDefaultBranch = env.BRANCH_IS_PRIMARY == 'true'
 // var to handle deployment from PR
 final String DEPLOY_PR_COMMENT = '/deploy-PR'
