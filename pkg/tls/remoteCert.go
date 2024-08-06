@@ -58,7 +58,7 @@ func CheckHostCert(target string, config *config.Config) {
 	timeNow := time.Now()
 	alertYears := 0
 	alertMonths := 0
-	alertDays := 40
+	alertDays := 28
 
 	for _, ip := range ips {
 		if ip.To4() != nil {
